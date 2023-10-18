@@ -4,6 +4,7 @@
 #include <list>
 #include "Utils.h"
 #include "Student.h"
+#include "Group.h"
 
 
 using namespace std;
@@ -20,7 +21,7 @@ void menu() {
 
 int main()
 {
-    Student student;
+    Group student_list;
     while (true)
     {
         menu();
@@ -32,12 +33,12 @@ int main()
             exit(0);        }
         case 1:
         {
-            student.input_student();
+            student_list.input_student();
             break;
         }
         case 2:
         {
-            student.see_all();
+            student_list.see_all();
             break;
         }
         case 3:
@@ -47,7 +48,7 @@ int main()
             cin >> ws;
             getline(cin, file_name);
             file_name += ".txt";
-            student.save(file_name);
+            student_list.save(file_name);
             break;
         }
         case 4:
@@ -57,12 +58,13 @@ int main()
             cin >> ws;
             getline(cin, file_name);
             file_name += ".txt";
-            student.load(file_name);
+            student_list.delete_all();
+            student_list.load(file_name);
             break;
         }
         case 5:
         {
-            student.delete_all();
+            student_list.delete_all();
             break;
         }
         default:

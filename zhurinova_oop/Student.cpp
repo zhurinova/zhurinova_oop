@@ -1,80 +1,24 @@
 #include "Student.h"
 #include "Utils.h"
+#include "Group.h"
 
 using namespace std;
 
-void Student::input_student()
+int Student::max_id_student = 0;
+
+Student::Student()
 {
-	Student s;
-	cin >> s;
-	student.push_back(new Student(s));
+	id_student = ++max_id_student;
 }
 
-void Student::see_all()
+int Student::get_id() const
 {
-	if (student.size() != 0)
-	{
-		for (const auto* st : student)
-		{
-			cout << *st << endl;
-		}
-	}
-	else
-		cout << "Student's list is empty" << endl;
-}
-
-void Student::save(const string& file_name)
-{
-	ofstream fout;
-	fout.open(file_name);
-	if (!fout.is_open())
-	{
-		cerr << "File open error" << endl;
-	}
-	else
-	{
-		fout << student.size() << endl;
-		for (const auto* st : student)
-			fout << *st;
-		fout.close();
-	}
-}
-
-void Student::load(string& file_name)
-{
-	student.clear();
-
-	int amount_of_students = 0;
-	ifstream fin;
-	fin.open(file_name, ofstream::in);
-	if (!fin.is_open())
-	{
-		cerr << "File open error" << endl;
-	}
-	else
-	{
-		Student s;
-		fin >> amount_of_students;
-		for (int i = 0; i < amount_of_students; i++)
-		{
-			fin >> s;
-			student.push_back(new Student(s));
-		}
-		fin.close();
-	}
-}
-
-void Student::delete_all()
-{
-	for (const auto* st : student)
-	{
-		delete st;
-	}
-	student.clear();
+	return id_student;
 }
 
 istream& operator >> (istream& in, Student& s)
 {
+	
 	cout << "Enter the name of student" << endl;
 	getline(in, s.name_student);
 	cout << "Enter the surname of student" << endl;
@@ -88,7 +32,8 @@ istream& operator >> (istream& in, Student& s)
 
 ostream& operator << (ostream& out, const Student& s)
 {
-	out << "Students's surname and name: " << s.surname_student <<" " << s.name_student
+	out << "Student's ID: " << s.id_student 
+		<< "\n          Students's surname and name: " << s.surname_student <<" " << s.name_student
 		<< "\n          Student's year of birth: " << s.age_student
 		<< "\n          Student's group: " << s.group_name << endl;
 	return out;
@@ -96,18 +41,23 @@ ostream& operator << (ostream& out, const Student& s)
 
 ifstream& operator >> (ifstream& in, Student& s)
 {
+	in >> s.id_student;
 	in >> s.name_student;
 	in >> s.surname_student;
 	in >> s.age_student;
 	in >> s.group_name;
+	s.max_id_student = s.get_id();
 	return in;
 }
 
 ofstream& operator << (ofstream& out, const Student& s)
 {
-	out << s.name_student << endl
+	out << s.id_student << endl
+		<< s.name_student << endl
 		<< s.surname_student << endl
 		<< s.age_student << endl
 		<< s.group_name << endl;
+
 	return out;
 }
+
